@@ -43,12 +43,25 @@ services:
       - traefik.http.middlewares.n8n.headers.STSPreload=true
       - traefik.http.routers.n8n.middlewares=n8n@docker
     environment:
-      - N8N_HOST=${SUBDOMAIN}.${DOMAIN_NAME}
+      # - NODE_ENV=production
+      # - WEBHOOK_URL=https://${SUBDOMAIN}.${DOMAIN_NAME}/
+      # - WEBHOOK_URL=http://192.168.1.47:5678/
+
+      - N8N_HOST=${DOMAIN_NAME}
       - N8N_PORT=5678
-      - N8N_PROTOCOL=https
-      - NODE_ENV=production
-      - WEBHOOK_URL=https://${SUBDOMAIN}.${DOMAIN_NAME}/
-      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
+      - N8N_PROTOCOL=http           # ใช้ http เพื่อให้เข้าทาง IP ได้
+      - N8N_SECURE_COOKIE=false     # ปิดเพื่อให้เข้าผ่าน IP (Non-HTTPS) ได้
+      - WEBHOOK_URL=https://${SUBDOMAIN}.${DOMAIN_NAME}/ # แต่ส่งออก Webhook เป็น HTTPS เสมอ
+      - GENERIC_TIMEZONE=Asia/Bangkok
+      - TZ=Asia/Bangkok
+    # user: "${UID}:${GID}" # หรือใช้ "root" เพื่อตัดปัญหาเรื่องสิทธิ์ (แต่ไม่แนะนำในแง่ความปลอดภัย)
+    # sudo chown -R 1000:1000 /home/ubuntu/n8n-deploy/n8n_data
+    # sudo chown -R 1000:1000 ./n8n_data
+
+
+# ในหน้าตั้งค่าของ Cloudflare SSL/TLS settings: 
+# ให้เลือกเป็นโหมด "Flexible" (Cloudflare คุยกับ n8n เป็น http แต่คุยกับ User เป็น https)
+
     volumes:
       - ./n8n_data:/home/node/.n8n
       - ./local-files:/files
