@@ -26,7 +26,7 @@ services:
     image: docker.n8n.io/n8nio/n8n
     restart: always
     ports:
-      - "0.0.0.0:8899:5678"
+      - "0.0.0.0:8899:8899"
     labels:
       - traefik.enable=true
       - traefik.http.routers.n8n.rule=Host(`${SUBDOMAIN}.${DOMAIN_NAME}`)
@@ -48,10 +48,13 @@ services:
       # - WEBHOOK_URL=http://192.168.1.47:5678/
 
       - N8N_HOST=${DOMAIN_NAME}
-      - N8N_PORT=5678
-      - N8N_PROTOCOL=http           # ใช้ http เพื่อให้เข้าทาง IP ได้
-      - N8N_SECURE_COOKIE=false     # ปิดเพื่อให้เข้าผ่าน IP (Non-HTTPS) ได้
-      - WEBHOOK_URL=https://${SUBDOMAIN}.${DOMAIN_NAME}/ # แต่ส่งออก Webhook เป็น HTTPS เสมอ
+      - N8N_PORT=8899
+      - N8N_PROTOCOL=https           # ใช้ http เพื่อให้เข้าทาง IP ได้
+      - N8N_SECURE_COOKIE=false    
+       # ปิดเพื่อให้เข้าผ่าน IP (Non-HTTPS) ได้
+      # - WEBHOOK_URL=https://${SUBDOMAIN}.${DOMAIN_NAME}/ # แต่ส่งออก Webhook เป็น HTTPS เสมอ
+      - WEBHOOK_URL=http://192.168.1.47:8899/
+
       - GENERIC_TIMEZONE=Asia/Bangkok
       - TZ=Asia/Bangkok
     # user: "${UID}:${GID}" # หรือใช้ "root" เพื่อตัดปัญหาเรื่องสิทธิ์ (แต่ไม่แนะนำในแง่ความปลอดภัย)
