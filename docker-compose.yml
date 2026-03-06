@@ -1,5 +1,6 @@
 
 services:
+
   traefik:
     image: "traefik"
     restart: always
@@ -60,7 +61,9 @@ services:
     # user: "${UID}:${GID}" # หรือใช้ "root" เพื่อตัดปัญหาเรื่องสิทธิ์ (แต่ไม่แนะนำในแง่ความปลอดภัย)
     # sudo chown -R 1000:1000 /home/ubuntu/n8n-deploy/n8n_data
     # sudo chown -R 1000:1000 ./n8n_data
-
+    volumes:
+      - ./n8n_data:/home/node/.n8n
+      - ./local-files:/files
 
 # ในหน้าตั้งค่าของ Cloudflare SSL/TLS settings: 
 # ให้เลือกเป็นโหมด "Flexible" (Cloudflare คุยกับ n8n เป็น http แต่คุยกับ User เป็น https)
@@ -80,6 +83,4 @@ services:
     restart: always
 
 
-    volumes:
-      - ./n8n_data:/home/node/.n8n
-      - ./local-files:/files
+
