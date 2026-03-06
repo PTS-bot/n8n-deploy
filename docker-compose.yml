@@ -65,6 +65,21 @@ services:
 # ในหน้าตั้งค่าของ Cloudflare SSL/TLS settings: 
 # ให้เลือกเป็นโหมด "Flexible" (Cloudflare คุยกับ n8n เป็น http แต่คุยกับ User เป็น https)
 
+
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "7000:9000"
+      - "7001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: miniopassword
+    volumes:
+      - ./volume:/data
+    command: server --address ":9001" --console-address ":9000" /data
+    restart: always
+
+
     volumes:
       - ./n8n_data:/home/node/.n8n
       - ./local-files:/files
