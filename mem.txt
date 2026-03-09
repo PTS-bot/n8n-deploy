@@ -1,0 +1,33 @@
+โครงสร้าง LangChain Conversation Format ใช้เก็บความจำไว้ใน MongoDB 
+1. โครงสร้างหลัก (Root Level)
+	_id: รหัสอ้างอิงของ MongoDB (ใช้เวลาต้องการลบหรือแก้ไขเจาะจงก้อนนี้)
+	sessionId: รหัสประจำตัวของบทสนทนานี้ (สำคัญมาก) ใช้สำหรับแยกแยะว่าประวัติชุดนี้เป็นของใคร
+	messages: เป็น Array (รายการ) ที่รวบรวมการโต้ตอบทั้งหมดไว้ในก้อนเดียว
+2. โครงสร้างภายใน Array messages ในแต่ละรอบของการคุย จะมี Object 2 ประเภทสลับกัน:
+A. ฝั่งผู้ใช้ (type: 'human') type: จะระบุชัดเจนว่าเป็น human
+
+data.content: คือ คำถามหรือข้อความ ที่ผู้ใช้พิมพ์เข้ามาจริงๆ (เช่น "ดีครับ", "รู้จัก n8n ไหม")
+
+B. ฝั่ง AI (type: 'ai') type: จะระบุว่าเป็น ai
+
+data.content: คือ คำตอบ ที่ AI สร้างขึ้น (ซึ่งอาจจะยาวและมี Format แบบ Markdown เช่น ###, **)
+data.additional_kwargs / response_metadata: ข้อมูลทางเทคนิคเบื้องหลัง (ปกติเราไม่ต้องนำมาใช้สรุป)
+
+Prompt สำหรับ AI ตัวที่ 2 (ตัวสรุป)
+จงสรุปบทสนทนาจากข้อมูล JSON ต่อไปนี้ โดยให้ความสำคัญกับ:
+
+    ข้อความใน type: 'human' ว่าผู้ใช้สนใจเรื่องอะไร
+    ข้อความใน type: 'ai' ว่าได้ให้คำแนะนำอะไรไปแล้วบ้าง
+    ข้ามข้อมูลในส่วน additional_kwargs และ metadata ไปได้เลย"
+
+
+mc --version
+mc alias set myminio http://192.168.1.47:7001/ minioadmin miniopassword
+--- สร้าง Key แยกสำหรับ n8n ---
+mc admin user svcacct add myminio minioadmin
+mc admin user svcacct remove myminio <ACCESS_KEY_ที่จดไม่ทัน>
+
+
+Access Key: NCGBWZH1ZFO3SFDHAQH5
+Secret Key: PnvAlpL9LxOYmoO4P2TUJ6zEPktb2UlU99oxVrh6
+Expiration: no-expiry
